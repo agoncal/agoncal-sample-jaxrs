@@ -1,4 +1,4 @@
-# Sample - CDI - Bootstrapping
+# Sample - JAX-RS - Bootstrapping
 
 ## Purpose of this sample
 
