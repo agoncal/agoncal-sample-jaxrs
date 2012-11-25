@@ -20,7 +20,7 @@ public class CustomerRestService {
     // ======================================
 
     @GET
-    @Path("{login: [a-zA-Z]*}")
+    @Path("{login: [a-z]*}")
     public Customer getCustomerByLogin(@PathParam("login") String login) {
         System.out.println("getCustomerByLogin : " + login);
         Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());

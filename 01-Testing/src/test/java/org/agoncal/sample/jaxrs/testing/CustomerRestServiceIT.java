@@ -41,11 +41,14 @@ public class CustomerRestServiceIT {
 
         Client client = ClientFactory.newClient();
 
+        // Valid URIs
         assertEquals(200, client.target("http://localhost:8282/customer/agoncal").request().get().getStatus());
         assertEquals(200, client.target("http://localhost:8282/customer/1234").request().get().getStatus());
         assertEquals(200, client.target("http://localhost:8282/customer?zip=75012").request().get().getStatus());
         assertEquals(200, client.target("http://localhost:8282/customer/search;firstname=Antonio;surname=Goncalves").request().get().getStatus());
 
+        // Invalid URIs
+        assertEquals(404, client.target("http://localhost:8282/customer/AGONCAL").request().get().getStatus());
         assertEquals(404, client.target("http://localhost:8282/customer/dummy/1234").request().get().getStatus());
 
         // Stop HTTP server
