@@ -7,7 +7,7 @@
     <groupId>org.agoncal.sample.jaxrs</groupId>
     <artifactId>testing</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>01 - Testing RESTful Web Serivces</name>
 
     <parent>

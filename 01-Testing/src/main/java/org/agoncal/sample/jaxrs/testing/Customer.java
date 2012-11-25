@@ -5,8 +5,6 @@ import java.util.Date;
 
 /**
  * @author Antonio Goncalves
- *         APress Book - Beginning Java EE 7 with Glassfish 4
- *         http://www.apress.com/
  *         http://www.antoniogoncalves.org
  *         --
  */
@@ -18,12 +16,12 @@ public class Customer {
     // ======================================
 
     private Long id;
+    private String login;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private Date dateOfBirth;
-    private Integer age;
     private Date creationDate;
 
     // ======================================
@@ -33,13 +31,13 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String email, String phoneNumber, Date dateOfBirth, Date creationDate) {
+    public Customer(String firstName, String lastName, String email, String phoneNumber, Date dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
-        this.creationDate = creationDate;
+        this.creationDate = new Date();
     }
 
     // ======================================
@@ -48,6 +46,18 @@ public class Customer {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getFirstName() {
@@ -88,14 +98,6 @@ public class Customer {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public Date getCreationDate() {
