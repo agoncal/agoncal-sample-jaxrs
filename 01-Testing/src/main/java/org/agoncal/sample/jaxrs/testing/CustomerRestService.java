@@ -2,6 +2,7 @@ package org.agoncal.sample.jaxrs.testing;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,38 +22,38 @@ public class CustomerRestService {
 
     @GET
     @Path("{login: [a-z]*}")
-    public Customer getCustomerByLogin(@PathParam("login") String login) {
+    public Response getCustomerByLogin(@PathParam("login") String login) {
         System.out.println("getCustomerByLogin : " + login);
-        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());
+        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
         customer.setLogin(login);
-        return customer;
+        return Response.ok(customer).build();
     }
 
     @GET
     @Path("{customerId : \\d+}")
-    public Customer getCustomerById(@PathParam("customerId") Long id) {
+    public Response getCustomerById(@PathParam("customerId") Long id) {
         System.out.println("getCustomerById : " + id);
-        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());
+        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
         customer.setId(id);
-        return customer;
+        return Response.ok(customer).build();
     }
 
     @GET
-    public List<Customer> getCustomersByZipCode(@QueryParam("zip") Long zip) {
+    public Response getCustomersByZipCode(@QueryParam("zip") Long zip) {
         System.out.println("getCustomerByZipCode : " + zip);
-        List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date()));
-        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date()));
-        return customers;
+        Customers customers = new Customers();
+        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565"));
+        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565"));
+        return Response.ok(customers).build();
     }
 
     @GET
     @Path("search")
-    public List<Customer> getCustomerByName(@MatrixParam("firstname") String firstname, @MatrixParam("surname") String surname) {
+    public Response getCustomerByName(@MatrixParam("firstname") String firstname, @MatrixParam("surname") String surname) {
         System.out.println("getCustomerByName : " + firstname + " - " + surname);
-        List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date()));
-        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date()));
-        return customers;
+        Customers customers = new Customers();
+        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565"));
+        customers.add(new Customer("John", "Smith", "jsmith@gmail.com", "1234565"));
+        return Response.ok(customers).build();
     }
 }
