@@ -70,7 +70,7 @@ public class CustomerCRUDRestServiceIT {
     @Test
     public void shouldMarshallACustomer() throws JAXBException {
         // given
-        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());
+        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
         StringWriter writer = new StringWriter();
         JAXBContext context = JAXBContext.newInstance(Customer.class);
         Marshaller m = context.createMarshaller();

@@ -24,7 +24,7 @@ public class CustomerCRUDRestService {
     @GET
     @Path("{login: [a-zA-Z]*}")
     public Customer getCustomerByLogin(@PathParam("login") String login) {
-        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());
+        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
         customer.setLogin(login);
         return customer;
     }
@@ -35,7 +35,7 @@ public class CustomerCRUDRestService {
     @GET
     @Path("{customerId : \\d+}")
     public Customer getCustomerById(@PathParam("customerId") Long id) {
-        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());
+        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
         customer.setId(id);
         return customer;
     }
@@ -43,14 +43,14 @@ public class CustomerCRUDRestService {
     @GET
     public Customer getCustomerByZipCode(@QueryParam("zip") Long zip) {
         System.out.println("getCustomerByZipCode : " + zip);
-        return new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());
+        return new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
     }
 
     @GET
 //    @Path("search")
     public Customer getCustomerByFirstnameName(@MatrixParam("firstname") String firstname, @MatrixParam("surname") String surname) {
         System.out.println("getCustomerByFirstnameName : " + firstname + " - " + surname);
-        return new Customer("John", "Smith", "jsmith@gmail.com", "1234565", new Date());
+        return new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
     }
 
     @GET

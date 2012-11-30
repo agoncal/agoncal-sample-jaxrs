@@ -21,8 +21,6 @@ public class Customer {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private Date dateOfBirth;
-    private Date creationDate;
 
     // ======================================
     // =            Constructors            =
@@ -31,13 +29,11 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String email, String phoneNumber, Date dateOfBirth) {
+    public Customer(String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.dateOfBirth = dateOfBirth;
-        this.creationDate = new Date();
     }
 
     // ======================================
@@ -90,21 +86,5 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 }
