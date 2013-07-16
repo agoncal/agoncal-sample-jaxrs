@@ -2,11 +2,10 @@ package org.agoncal.sample.jaxrs.testing;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientFactory;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.RuntimeDelegate;
@@ -75,7 +74,7 @@ public class CustomerRestServiceIT {
         // Start the server
         server.start();
 
-        Client client = ClientFactory.newClient();
+        Client client = ClientBuilder.newClient();
 
         // Valid URIs
         assertEquals(200, client.target("http://localhost:8282/customer/agoncal").request().get().getStatus());
@@ -105,7 +104,7 @@ public class CustomerRestServiceIT {
         // Start the server
         server.start();
 
-        Client client = ClientFactory.newClient();
+        Client client = ClientBuilder.newClient();
 
         // Valid URIs
         Response response= client.target("http://localhost:8282/customer/agoncal").request().get();
@@ -132,7 +131,7 @@ public class CustomerRestServiceIT {
         // Start the server
         server.start();
 
-        Client client = ClientFactory.newClient();
+        Client client = ClientBuilder.newClient();
 
         // Valid URIs
         Response response= client.target("http://localhost:8282/customer").request().get();
