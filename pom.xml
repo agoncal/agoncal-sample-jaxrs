@@ -16,7 +16,7 @@
 
     <properties>
         <version.java>1.7</version.java>
-        <version.jersey>2.0-m09</version.jersey>
+        <version.jersey>2.0</version.jersey>
         <version.junit>4.11</version.junit>
         <!--Maven Plugins-->
         <version.maven.compiler.plugin>2.5.1</version.maven.compiler.plugin>
