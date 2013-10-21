@@ -8,7 +8,7 @@
     <artifactId>amazon</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
-    <name>01 - Testing Amazon REST API</name>
+    <name>02 - Testing Amazon REST API</name>
 
     <parent>
         <groupId>org.agoncal.sample.jaxrs</groupId>
