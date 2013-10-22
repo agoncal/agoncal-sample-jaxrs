@@ -39,11 +39,11 @@ public class CustomerRestServiceIT {
     @Test
     public void shouldMarshallACustomer() throws JAXBException {
         // given
-        Customer book = new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
+        Customer customer = new Customer("John", "Smith", "jsmith@gmail.com", "1234565");
         StringWriter writer = new StringWriter();
         JAXBContext context = JAXBContext.newInstance(Customer.class);
         Marshaller m = context.createMarshaller();
-        m.marshal(book, writer);
+        m.marshal(customer, writer);
 
         // then
         assertEquals(XML, writer.toString());

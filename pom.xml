@@ -12,20 +12,22 @@
 
     <modules>
         <module>01-Testing</module>
+        <module>02-Amazon</module>
+        <module>03-QueryByExample</module>
     </modules>
 
     <properties>
         <version.java>1.7</version.java>
-        <version.jersey>2.0</version.jersey>
+        <version.javaee>7.0</version.javaee>
+        <version.jersey>2.3.1</version.jersey>
         <version.junit>4.11</version.junit>
         <!--Maven Plugins-->
-        <version.maven.compiler.plugin>2.5.1</version.maven.compiler.plugin>
-        <version.maven.dependency.plugin>2.5.1</version.maven.dependency.plugin>
+        <version.maven.compiler.plugin>3.1</version.maven.compiler.plugin>
+        <version.maven.dependency.plugin>2.8</version.maven.dependency.plugin>
         <version.maven.jar.plugin>2.4</version.maven.jar.plugin>
-        <version.maven.jrebel.plugin>1.0.7</version.maven.jrebel.plugin>
-        <version.maven.war.plugin>2.2</version.maven.war.plugin>
-        <version.maven.exec.plugin>1.2.1</version.maven.exec.plugin>
-        <version.maven.test.plugin>2.12.4</version.maven.test.plugin>
+        <version.maven.jrebel.plugin>1.1.5</version.maven.jrebel.plugin>
+        <version.maven.war.plugin>2.4</version.maven.war.plugin>
+        <version.maven.test.plugin>2.16</version.maven.test.plugin>
         <!--Test-->
         <skipTests>false</skipTests>
         <skipITs>${skipTests}</skipITs>
@@ -37,6 +39,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Java EE -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${version.javaee}</version>
+                <scope>provided</scope>
+            </dependency>
             <dependency>
                 <groupId>org.glassfish.jersey.core</groupId>
                 <artifactId>jersey-common</artifactId>
