@@ -126,14 +126,16 @@ public class CustomerCRUDRestServiceIT {
         assertEquals(200, response.getStatus());
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void shouldCheckGetCustomerWithCookieParamURI() {
         Cookie myCookie = new Cookie("myCookie", "This is my cookie");
         String response = client.target("http://localhost:8282/customer/cookie").request().cookie(myCookie).get(String.class);
         assertEquals("This is my cookie from the server", response);
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void shouldEchoUserAgentValue() {
         String response = client.target("http://localhost:8282/customer/userAgent").request().get(String.class);
         assertEquals("Jersey/2.0-m09 (HttpUrlConnection 1.7.0_04) from the server", response);

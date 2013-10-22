@@ -107,7 +107,7 @@ public class CustomerRestServiceIT {
         Client client = ClientBuilder.newClient();
 
         // Valid URIs
-        Response response= client.target("http://localhost:8282/customer/agoncal").request().get();
+        Response response = client.target("http://localhost:8282/customer/agoncal").request().get();
         assertEquals(200, response.getStatus());
 
         System.out.println("###############################");
@@ -134,7 +134,7 @@ public class CustomerRestServiceIT {
         Client client = ClientBuilder.newClient();
 
         // Valid URIs
-        Response response= client.target("http://localhost:8282/customer").request().get();
+        Response response = client.target("http://localhost:8282/customer").request().get();
         assertEquals(200, response.getStatus());
 
         System.out.println("###############################");

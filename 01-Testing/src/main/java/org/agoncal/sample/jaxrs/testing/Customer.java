@@ -1,7 +1,6 @@
 package org.agoncal.sample.jaxrs.testing;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
 
 /**
  * @author Antonio Goncalves

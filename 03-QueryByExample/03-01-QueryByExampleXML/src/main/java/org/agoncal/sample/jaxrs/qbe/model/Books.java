@@ -1,4 +1,4 @@
-package org.agoncal.sample.jaxrs.testing;
+package org.agoncal.sample.jaxrs.qbe.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,18 +13,18 @@ import java.util.List;
  *         --
  */
 @XmlRootElement
-@XmlSeeAlso(Customer.class)
-public class Customers extends ArrayList<Customer> {
+@XmlSeeAlso(Book.class)
+public class Books extends ArrayList<Book> {
 
     // ======================================
     // =            Constructors            =
     // ======================================
 
-    public Customers() {
+    public Books() {
         super();
     }
 
-    public Customers(Collection<? extends Customer> c) {
+    public Books(Collection<? extends Book> c) {
         super(c);
     }
 
@@ -32,12 +32,8 @@ public class Customers extends ArrayList<Customer> {
     // =          Getters & Setters         =
     // ======================================
 
-    @XmlElement(name = "customer")
-    public List<Customer> getCustomers() {
+    @XmlElement(name = "book")
+    public List<Book> getBooks() {
         return this;
-    }
-
-    public void setBooks(List<Customer> customers) {
-        this.addAll(customers);
     }
 }

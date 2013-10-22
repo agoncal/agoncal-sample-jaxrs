@@ -3,9 +3,6 @@ package org.agoncal.sample.jaxrs.testing;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Antonio Goncalves
