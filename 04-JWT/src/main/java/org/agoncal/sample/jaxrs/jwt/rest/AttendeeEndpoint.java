@@ -2,16 +2,15 @@ package org.agoncal.sample.jaxrs.jwt.rest;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.agoncal.sample.jaxrs.jwt.domain.Attendee;
 import org.agoncal.sample.jaxrs.jwt.repository.AttendeeRepository;
+import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.security.Key;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,7 +49,6 @@ public class AttendeeEndpoint {
 
     @POST
     @Path("/login")
-    @Secured
     @Consumes(APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@FormParam("username") String username,
                                      @FormParam("password") String password) {
@@ -76,7 +74,7 @@ public class AttendeeEndpoint {
     private void authenticate(String login, String password) throws Exception {
         Attendee attendee = attendeeRepository.findByLoginPassword(login, password);
         if (attendee == null)
-            throw new SecurityException();
+            throw new SecurityException("Invalid user/password");
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
     }
@@ -85,8 +83,9 @@ public class AttendeeEndpoint {
         // Issue a token (can be a random String persisted to a database or a JWT token)
         // The issued token must be associated to a user
         // Return the issued token
-        Key key = MacProvider.generateKey();
+        String key = PasswordUtils.getKey();
         String jwtToken = Jwts.builder().setSubject(username).signWith(SignatureAlgorithm.HS512, key).compact();
+        logger.info("#### generating token for a key : " + jwtToken + " - " + key);
         return jwtToken;
 
     }

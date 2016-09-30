@@ -25,4 +25,11 @@ public class PasswordUtils {
             throw new RuntimeException("Exception encoding password", e);
         }
     }
+
+    public static String getKey() {
+        // KeyGenerator.getInstance("AES").generateKey()
+        // Key key = new Key();
+        // Key key = MacProvider.generateKey();
+        return "thisIsTheKey";
+    }
 }

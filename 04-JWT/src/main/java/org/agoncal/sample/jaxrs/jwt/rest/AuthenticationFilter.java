@@ -1,7 +1,7 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.crypto.MacProvider;
+import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
@@ -13,7 +13,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.security.Key;
 import java.util.logging.Logger;
 
 /**
@@ -63,12 +62,12 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
     }
 
-    private void validateToken(String token) throws Exception {
+    private void validateToken(String jwtToken) throws Exception {
         // Check if it was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
-        Key key = MacProvider.generateKey();
-
-        Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        String key = PasswordUtils.getKey();
+        logger.info("#### validating token for a key : " + jwtToken + " - " + key);
+        Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken);
         //OK, we can trust this JWT
     }
 }
