@@ -37,9 +37,9 @@ public class AttendeeRepository {
         return query.getResultList();
     }
 
-    public Integer countNumberOfAttendees() {
-        TypedQuery<Integer> query = em.createNamedQuery(Attendee.COUNT_ALL, Integer.class);
-        Integer countResult = query.getSingleResult();
+    public Long countNumberOfAttendees() {
+        TypedQuery<Long> query = em.createNamedQuery(Attendee.COUNT_ALL, Long.class);
+        Long countResult = query.getSingleResult();
         return countResult;
     }
 

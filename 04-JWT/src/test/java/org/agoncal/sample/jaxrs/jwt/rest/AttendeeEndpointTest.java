@@ -12,6 +12,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,12 +24,17 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.StringReader;
 import java.net.URI;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -57,11 +63,16 @@ public class AttendeeEndpointTest {
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
 
+        // Import Maven runtime dependencies
+        File[] files = Maven.resolver().loadPomFromFile("pom.xml")
+                .importRuntimeDependencies().resolve().withTransitivity().asFile();
+
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(Attendee.class, AttendeeRepository.class, AttendeeEndpoint.class)
                 .addClasses(PasswordUtils.class, Secured.class, LoggerProducer.class, ApplicationConfig.class)
                 .addAsResource("META-INF/persistence-test.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsLibraries(files);
     }
 
     // ======================================
@@ -77,6 +88,18 @@ public class AttendeeEndpointTest {
     // ======================================
     // =            Test methods            =
     // ======================================
+
+    @Test
+    public void shouldFailLogin() throws Exception {
+        Form form = new Form();
+        form.param("username", "dummyUsername");
+        form.param("password", "dummyPaswword");
+
+        Response response = webTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+
+        assertEquals(200, response.getStatus());
+        assertTrue(response.getHeaderString(HttpHeaders.AUTHORIZATION).startsWith("Bearer "));
+    }
 
     @Test
     @InSequence(1)

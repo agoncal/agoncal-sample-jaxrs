@@ -30,9 +30,9 @@ public class EchoEndpoint {
     // ======================================
 
     @GET
-    @Produces({TEXT_PLAIN})
+    @Produces(TEXT_PLAIN)
     public Response echo(@QueryParam("message") String message) {
-        logger.info("Received message: " + message);
-        return Response.ok().entity(message).build();
+        logger.info("#### Received message: " + message);
+        return Response.ok().entity(message == null ? "no message" : message).build();
     }
 }

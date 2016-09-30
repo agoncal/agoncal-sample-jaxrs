@@ -21,6 +21,8 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
 
         Set<Class<?>> classes = new HashSet();
+        classes.add(EchoEndpoint.class);
+        classes.add(AttendeeEndpoint.class);
         // classes.add(JWTAuthFilter.class);
         return classes;
     }

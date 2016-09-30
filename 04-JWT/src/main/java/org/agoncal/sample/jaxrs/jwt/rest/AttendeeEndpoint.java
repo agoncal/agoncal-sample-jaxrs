@@ -13,12 +13,17 @@ import java.security.Key;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
 /**
  * @author Antonio Goncalves
  *         http://www.antoniogoncalves.org
  *         --
  */
-@Path("/attendee")
+@Path("/attendees")
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public class AttendeeEndpoint {
 
     // ======================================
@@ -41,12 +46,13 @@ public class AttendeeEndpoint {
     @POST
     @Path("/login")
     @Secured
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@FormParam("username") String username,
                                      @FormParam("password") String password) {
 
         try {
+
+            logger.info("#### login/password : " + username + "/" + password);
 
             // Authenticate the user using the credentials provided
             authenticate(username, password);
@@ -55,7 +61,7 @@ public class AttendeeEndpoint {
             String token = issueToken(username);
 
             // Return the token on the response
-            return Response.ok(token).build();
+            return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -72,20 +78,22 @@ public class AttendeeEndpoint {
         // The issued token must be associated to a user
         // Return the issued token
         Key key = MacProvider.generateKey();
-        String jwtToken = Jwts.builder().setSubject("Joe").signWith(SignatureAlgorithm.HS512, key).compact();
+        String jwtToken = Jwts.builder().setSubject(username).signWith(SignatureAlgorithm.HS512, key).compact();
         return jwtToken;
 
     }
 
     @POST
     public Response create(Attendee attendee) {
+        logger.info("#### create attendee : " + attendee);
         Attendee created = attendeeRepository.create(attendee);
         return Response.created(uriInfo.getAbsolutePathBuilder().path(created.getId()).build()).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") String id, @Context Request request) {
+    public Response findById(@PathParam("id") String id) {
+        logger.info("#### find attendee by id : " + id);
 
         Attendee attendee = attendeeRepository.findById(id);
 
@@ -96,7 +104,19 @@ public class AttendeeEndpoint {
     }
 
     @GET
+    @Path("/count")
+    public Response countAllAttendees() {
+        logger.info("#### count all attendee");
+
+        Long nbAttendees = attendeeRepository.countNumberOfAttendees();
+
+        return Response.ok(nbAttendees).build();
+    }
+
+    @GET
     public Response allAttendees() {
+        logger.info("#### find all attendee");
+
         List<Attendee> allAttendees = attendeeRepository.findAllAttendees();
 
         if (allAttendees == null)
