@@ -66,7 +66,7 @@ public class EchoEndpointTest {
     // ======================================
 
     @Test
-    public void shouldGetAllRooms() throws Exception {
+    public void shouldEcho() throws Exception {
         Response response = webTarget.request(TEXT_PLAIN).get();
         assertEquals(200, response.getStatus());
     }
