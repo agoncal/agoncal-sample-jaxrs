@@ -23,16 +23,27 @@
         <version.jersey>2.23.2</version.jersey>
         <version.junit>4.12</version.junit>
         <!--Maven Plugins-->
-        <version.maven.compiler.plugin>3.5.1</version.maven.compiler.plugin>
-        <version.maven.dependency.plugin>2.10</version.maven.dependency.plugin>
-        <version.maven.jar.plugin>3.0.2</version.maven.jar.plugin>
-        <version.maven.jrebel.plugin>1.1.5</version.maven.jrebel.plugin>
-        <version.maven.war.plugin>3.0.0</version.maven.war.plugin>
-        <version.maven.test.plugin>2.19.1</version.maven.test.plugin>
+        <version.clean.plugin>3.0.0</version.clean.plugin>
+        <version.compiler.plugin>3.5.1</version.compiler.plugin>
+        <version.dependency.plugin>2.10</version.dependency.plugin>
+        <version.failsafe.plugin>2.19.1</version.failsafe.plugin>
+        <version.install.plugin>2.5.2</version.install.plugin>
+        <version.jar.plugin>3.0.2</version.jar.plugin>
+        <version.resources.plugin>3.0.1</version.resources.plugin>
+        <version.site.plugin>3.5.1</version.site.plugin>
+        <version.surefire.plugin>2.19.1</version.surefire.plugin>
+        <version.war.plugin>2.6</version.war.plugin>
         <!--Test-->
+        <version.arquillian>1.0.0.Alpha4</version.arquillian>
+        <version.arquillian.wildfly.remote>8.2.1.Final</version.arquillian.wildfly.remote>
+        <version.arquillian.wildfly.managed>8.2.1.Final</version.arquillian.wildfly.managed>
         <skipTests>false</skipTests>
         <skipITs>${skipTests}</skipITs>
         <skipUTs>${skipTests}</skipUTs>
+        <version.resteasy>3.0.18.Final</version.resteasy>
+        <version.json>1.0.4</version.json>
+        <!-- App servers -->
+        <version.wildfly>10.1.0.Final</version.wildfly>
         <!--Encoding-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -73,10 +84,38 @@
                 <version>${version.jersey}</version>
             </dependency>
 
+            <!-- ARQUILLIAN TEST -->
+            <dependency>
+                <groupId>org.arquillian</groupId>
+                <artifactId>arquillian-universe</artifactId>
+                <version>${version.arquillian}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- TEST -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-client</artifactId>
+                <version>${version.resteasy}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jackson-provider</artifactId>
+                <version>${version.resteasy}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.json</artifactId>
+                <version>${version.json}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -87,8 +126,13 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${version.clean.plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${version.maven.compiler.plugin}</version>
+                    <version>${version.compiler.plugin}</version>
                     <inherited>true</inherited>
                     <configuration>
                         <source>${version.java}</source>
@@ -98,17 +142,22 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${version.maven.dependency.plugin}</version>
+                    <version>${version.dependency.plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${version.install.plugin}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>${version.maven.jar.plugin}</version>
+                    <version>${version.jar.plugin}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${version.maven.test.plugin}</version>
+                    <version>${version.failsafe.plugin}</version>
                     <configuration>
                         <skipTests>${skipTests}</skipTests>
                         <skipITs>${skipITs}</skipITs>
@@ -125,8 +174,18 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${version.resources.plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${version.site.plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${version.maven.test.plugin}</version>
+                    <version>${version.surefire.plugin}</version>
                     <configuration>
                         <skipTests>${skipUTs}</skipTests>
                     </configuration>
@@ -134,7 +193,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
-                    <version>${version.maven.war.plugin}</version>
+                    <version>${version.war.plugin}</version>
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
@@ -142,7 +201,7 @@
                 <plugin>
                     <groupId>org.zeroturnaround</groupId>
                     <artifactId>jrebel-maven-plugin</artifactId>
-                    <version>${version.maven.jrebel.plugin}</version>
+                    <version>${version.jrebel.plugin}</version>
                     <executions>
                         <execution>
                             <id>generate-rebel-xml</id>
@@ -156,6 +215,94 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>arquillian-wildfly-remote</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${version.surefire.plugin}</version>
+                        <configuration>
+                            <skipTests>false</skipTests>
+                            <systemPropertyVariables>
+                                <arquillian.launch>arquillian-wildfly-remote</arquillian.launch>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-remote</artifactId>
+                    <version>${version.arquillian.wildfly.remote}</version>
+                    <scope>test</scope>
+                    <exclusions>
+                        <exclusion>
+                            <artifactId>jconsole</artifactId>
+                            <groupId>sun.jdk</groupId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>arquillian-wildfly-managed</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>${version.dependency.plugin}</version>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.wildfly</groupId>
+                                            <artifactId>wildfly-dist</artifactId>
+                                            <version>${version.wildfly}</version>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${version.surefire.plugin}</version>
+                        <configuration>
+                            <skipTests>false</skipTests>
+                            <systemPropertyVariables>
+                                <arquillian.launch>arquillian-wildfly-managed</arquillian.launch>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-managed</artifactId>
+                    <version>${version.arquillian.wildfly.managed}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
     <repositories>
         <repository>

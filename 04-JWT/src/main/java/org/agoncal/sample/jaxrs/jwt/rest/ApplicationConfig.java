@@ -1,4 +1,4 @@
-package org.agoncal.sample.jaxrs.jwt;
+package org.agoncal.sample.jaxrs.jwt.rest;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -10,7 +10,7 @@ import java.util.Set;
  *         http://www.antoniogoncalves.org
  *         --
  */
-@ApplicationPath("rs")
+@ApplicationPath("api")
 public class ApplicationConfig extends Application {
 
     // ======================================
