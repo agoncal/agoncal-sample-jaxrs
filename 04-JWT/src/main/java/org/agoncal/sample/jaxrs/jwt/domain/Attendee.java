@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 @NamedQueries({
         @NamedQuery(name = Attendee.FIND_ALL, query = "SELECT a FROM Attendee a ORDER BY a.lastName DESC"),
+        @NamedQuery(name = Attendee.FIND_BY_LOGIN_PASSWORD, query = "SELECT a FROM Attendee a WHERE a.login = :login AND a.password = :password"),
         @NamedQuery(name = Attendee.COUNT_ALL, query = "SELECT COUNT(a) FROM Attendee a")
 })
 @XmlRootElement
@@ -29,6 +30,7 @@ public class Attendee {
 
     public static final String FIND_ALL = "Attendee.findAll";
     public static final String COUNT_ALL = "Attendee.countAll";
+    public static final String FIND_BY_LOGIN_PASSWORD = "Attendee.findByLoginAndPassword";
 
     // ======================================
     // =             Attributes             =

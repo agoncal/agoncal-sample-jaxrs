@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  *         --
  */
 @Provider
+@Secured
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 

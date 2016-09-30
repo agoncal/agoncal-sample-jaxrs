@@ -8,13 +8,18 @@ import org.agoncal.sample.jaxrs.jwt.repository.AttendeeRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.security.Key;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 /**
  * @author Antonio Goncalves
@@ -61,14 +66,17 @@ public class AttendeeEndpoint {
             String token = issueToken(username);
 
             // Return the token on the response
-            return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
+            return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+            return Response.status(UNAUTHORIZED).build();
         }
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String login, String password) throws Exception {
+        Attendee attendee = attendeeRepository.findByLoginPassword(login, password);
+        if (attendee == null)
+            throw new SecurityException();
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
     }
@@ -98,7 +106,7 @@ public class AttendeeEndpoint {
         Attendee attendee = attendeeRepository.findById(id);
 
         if (attendee == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(NOT_FOUND).build();
 
         return Response.ok(attendee).build();
     }
@@ -120,7 +128,7 @@ public class AttendeeEndpoint {
         List<Attendee> allAttendees = attendeeRepository.findAllAttendees();
 
         if (allAttendees == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(NOT_FOUND).build();
 
         return Response.ok(allAttendees).build();
     }

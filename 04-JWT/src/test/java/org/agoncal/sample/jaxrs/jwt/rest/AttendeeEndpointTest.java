@@ -34,7 +34,7 @@ import java.net.URI;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -69,7 +69,7 @@ public class AttendeeEndpointTest {
 
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(Attendee.class, AttendeeRepository.class, AttendeeEndpoint.class)
-                .addClasses(PasswordUtils.class, Secured.class, LoggerProducer.class, ApplicationConfig.class)
+                .addClasses(PasswordUtils.class, Secured.class, LoggerProducer.class, AttendeeApplicationConfig.class)
                 .addAsResource("META-INF/persistence-test.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(files);
@@ -82,7 +82,7 @@ public class AttendeeEndpointTest {
     @Before
     public void initWebTarget() {
         client = ClientBuilder.newClient();
-        webTarget = client.target(baseURL).path("api/attendee");
+        webTarget = client.target(baseURL).path("api/attendees");
     }
 
     // ======================================
@@ -97,8 +97,8 @@ public class AttendeeEndpointTest {
 
         Response response = webTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
-        assertEquals(200, response.getStatus());
-        assertTrue(response.getHeaderString(HttpHeaders.AUTHORIZATION).startsWith("Bearer "));
+        assertEquals(401, response.getStatus());
+        assertNull(response.getHeaderString(HttpHeaders.AUTHORIZATION));
     }
 
     @Test

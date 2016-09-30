@@ -1,6 +1,7 @@
 package org.agoncal.sample.jaxrs.jwt.repository;
 
 import org.agoncal.sample.jaxrs.jwt.domain.Attendee;
+import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,6 +46,13 @@ public class AttendeeRepository {
 
     public Attendee findById(String id) {
         return em.find(Attendee.class, id);
+    }
+
+    public Attendee findByLoginPassword(String login, String password) {
+        TypedQuery<Attendee> query = em.createNamedQuery(Attendee.FIND_BY_LOGIN_PASSWORD, Attendee.class);
+        query.setParameter("login", login);
+        query.setParameter("password", PasswordUtils.digestPassword(password));
+        return query.getSingleResult();
     }
 
     public void delete(String id) {
