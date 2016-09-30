@@ -14,20 +14,21 @@
         <module>01-Testing</module>
         <module>02-Amazon</module>
         <module>03-QueryByExample</module>
+        <module>04-JWT</module>
     </modules>
 
     <properties>
-        <version.java>1.7</version.java>
+        <version.java>1.8</version.java>
         <version.javaee>7.0</version.javaee>
-        <version.jersey>2.3.1</version.jersey>
-        <version.junit>4.11</version.junit>
+        <version.jersey>2.23.2</version.jersey>
+        <version.junit>4.12</version.junit>
         <!--Maven Plugins-->
-        <version.maven.compiler.plugin>3.1</version.maven.compiler.plugin>
-        <version.maven.dependency.plugin>2.8</version.maven.dependency.plugin>
-        <version.maven.jar.plugin>2.4</version.maven.jar.plugin>
+        <version.maven.compiler.plugin>3.5.1</version.maven.compiler.plugin>
+        <version.maven.dependency.plugin>2.10</version.maven.dependency.plugin>
+        <version.maven.jar.plugin>3.0.2</version.maven.jar.plugin>
         <version.maven.jrebel.plugin>1.1.5</version.maven.jrebel.plugin>
-        <version.maven.war.plugin>2.4</version.maven.war.plugin>
-        <version.maven.test.plugin>2.16</version.maven.test.plugin>
+        <version.maven.war.plugin>3.0.0</version.maven.war.plugin>
+        <version.maven.test.plugin>2.19.1</version.maven.test.plugin>
         <!--Test-->
         <skipTests>false</skipTests>
         <skipITs>${skipTests}</skipITs>
@@ -93,6 +94,11 @@
                         <source>${version.java}</source>
                         <target>${version.java}</target>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${version.maven.dependency.plugin}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
