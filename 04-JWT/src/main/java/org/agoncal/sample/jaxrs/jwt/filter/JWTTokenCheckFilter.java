@@ -1,7 +1,7 @@
-package org.agoncal.sample.jaxrs.jwt.rest;
+package org.agoncal.sample.jaxrs.jwt.filter;
 
 import io.jsonwebtoken.Jwts;
-import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
+import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
@@ -13,6 +13,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.security.Key;
 import java.util.logging.Logger;
 
 /**
@@ -21,9 +22,9 @@ import java.util.logging.Logger;
  *         --
  */
 @Provider
-@Secured
+@JWTTokenNeeded
 @Priority(Priorities.AUTHENTICATION)
-public class AuthenticationFilter implements ContainerRequestFilter {
+public class JWTTokenCheckFilter implements ContainerRequestFilter {
 
     // ======================================
     // =          Injection Points          =
@@ -31,6 +32,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Inject
     private Logger logger;
+
+    @Inject
+    private KeyGenerator keyGenerator;
 
     // ======================================
     // =          Business methods          =
@@ -65,7 +69,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void validateToken(String jwtToken) throws Exception {
         // Check if it was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
-        String key = PasswordUtils.getKey();
+        Key key = keyGenerator.generateKey();
         logger.info("#### validating token for a key : " + jwtToken + " - " + key);
         Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken);
         //OK, we can trust this JWT

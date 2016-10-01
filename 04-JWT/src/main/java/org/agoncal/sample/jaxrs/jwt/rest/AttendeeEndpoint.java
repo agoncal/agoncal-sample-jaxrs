@@ -4,13 +4,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.agoncal.sample.jaxrs.jwt.domain.Attendee;
 import org.agoncal.sample.jaxrs.jwt.repository.AttendeeRepository;
-import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
+import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.security.Key;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -42,6 +43,9 @@ public class AttendeeEndpoint {
 
     @Inject
     private Logger logger;
+
+    @Inject
+    private KeyGenerator keyGenerator;
 
     // ======================================
     // =          Business methods          =
@@ -83,7 +87,7 @@ public class AttendeeEndpoint {
         // Issue a token (can be a random String persisted to a database or a JWT token)
         // The issued token must be associated to a user
         // Return the issued token
-        String key = PasswordUtils.getKey();
+        Key key = keyGenerator.generateKey();
         String jwtToken = Jwts.builder().setSubject(username).signWith(SignatureAlgorithm.HS512, key).compact();
         logger.info("#### generating token for a key : " + jwtToken + " - " + key);
         return jwtToken;

@@ -2,8 +2,10 @@ package org.agoncal.sample.jaxrs.jwt.rest;
 
 import org.agoncal.sample.jaxrs.jwt.domain.Attendee;
 import org.agoncal.sample.jaxrs.jwt.repository.AttendeeRepository;
+import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 import org.agoncal.sample.jaxrs.jwt.util.LoggerProducer;
 import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
+import org.agoncal.sample.jaxrs.jwt.util.SimpleKeyGenerator;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -69,7 +71,7 @@ public class AttendeeEndpointTest {
 
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(Attendee.class, AttendeeRepository.class, AttendeeEndpoint.class)
-                .addClasses(PasswordUtils.class, Secured.class, LoggerProducer.class, AttendeeApplicationConfig.class)
+                .addClasses(PasswordUtils.class, KeyGenerator.class, SimpleKeyGenerator.class, LoggerProducer.class, AttendeeApplicationConfig.class)
                 .addAsResource("META-INF/persistence-test.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(files);

@@ -1,5 +1,7 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
+import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeeded;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,7 +32,7 @@ public class SecuredEchoEndpoint {
     // ======================================
 
     @GET
-    @Secured
+    @JWTTokenNeeded
     @Produces(TEXT_PLAIN)
     public Response echo(@QueryParam("message") String message) {
         logger.info("#### Received message: " + message);

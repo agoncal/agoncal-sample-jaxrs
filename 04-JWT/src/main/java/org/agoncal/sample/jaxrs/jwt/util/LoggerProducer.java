@@ -9,7 +9,6 @@ import java.util.logging.Logger;
  *         http://www.antoniogoncalves.org
  *         --
  */
-
 public class LoggerProducer {
 
     // ======================================

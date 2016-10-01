@@ -1,4 +1,4 @@
-package org.agoncal.sample.jaxrs.jwt.rest;
+package org.agoncal.sample.jaxrs.jwt.filter;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;
@@ -11,5 +11,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @NameBinding
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
-public @interface Secured {
+public @interface JWTTokenNeeded {
 }
