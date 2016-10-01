@@ -1,5 +1,7 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
+import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenCheckFilter;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ public class SecuredEchoApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet();
         classes.add(SecuredEchoEndpoint.class);
+        classes.add(JWTTokenCheckFilter.class);
         return classes;
     }
 }

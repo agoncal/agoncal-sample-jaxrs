@@ -1,6 +1,10 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
+import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenCheckFilter;
+import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeeded;
+import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 import org.agoncal.sample.jaxrs.jwt.util.LoggerProducer;
+import org.agoncal.sample.jaxrs.jwt.util.SimpleKeyGenerator;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -47,7 +51,9 @@ public class SecuredEchoEndpointTest {
     public static WebArchive createDeployment() {
 
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(SecuredEchoEndpoint.class, LoggerProducer.class, SecuredEchoApplicationConfig.class)
+                .addClasses(SecuredEchoEndpoint.class)
+                .addClasses(JWTTokenCheckFilter.class, JWTTokenNeeded.class, KeyGenerator.class, SimpleKeyGenerator.class)
+                .addClasses(LoggerProducer.class, SecuredEchoApplicationConfig.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -68,6 +74,6 @@ public class SecuredEchoEndpointTest {
     @Test
     public void shouldEcho() throws Exception {
         Response response = webTarget.request(TEXT_PLAIN).get();
-        assertEquals(200, response.getStatus());
+        assertEquals(401, response.getStatus());
     }
 }
