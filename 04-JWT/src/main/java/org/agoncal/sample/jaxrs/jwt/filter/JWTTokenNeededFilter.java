@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 @Provider
 @JWTTokenNeeded
 @Priority(Priorities.AUTHENTICATION)
-public class JWTTokenCheckFilter implements ContainerRequestFilter {
+public class JWTTokenNeededFilter implements ContainerRequestFilter {
 
     // ======================================
     // =          Injection Points          =

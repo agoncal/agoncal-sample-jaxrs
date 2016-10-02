@@ -1,6 +1,6 @@
 package org.agoncal.sample.jaxrs.jwt.repository;
 
-import org.agoncal.sample.jaxrs.jwt.domain.Attendee;
+import org.agoncal.sample.jaxrs.jwt.domain.User;
 import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
 
 import javax.persistence.EntityManager;
@@ -15,7 +15,7 @@ import java.util.List;
  *         --
  */
 @Transactional
-public class AttendeeRepository {
+public class UserRepository {
 
     // ======================================
     // =          Injection Points          =
@@ -28,34 +28,34 @@ public class AttendeeRepository {
     // =          Business methods          =
     // ======================================
 
-    public Attendee create(Attendee attendee) {
-        em.persist(attendee);
-        return attendee;
+    public User create(User user) {
+        em.persist(user);
+        return user;
     }
 
-    public List<Attendee> findAllAttendees() {
-        TypedQuery<Attendee> query = em.createNamedQuery(Attendee.FIND_ALL, Attendee.class);
+    public List<User> findAllUsers() {
+        TypedQuery<User> query = em.createNamedQuery(User.FIND_ALL, User.class);
         return query.getResultList();
     }
 
-    public Long countNumberOfAttendees() {
-        TypedQuery<Long> query = em.createNamedQuery(Attendee.COUNT_ALL, Long.class);
+    public Long countNumberOfUsers() {
+        TypedQuery<Long> query = em.createNamedQuery(User.COUNT_ALL, Long.class);
         Long countResult = query.getSingleResult();
         return countResult;
     }
 
-    public Attendee findById(String id) {
-        return em.find(Attendee.class, id);
+    public User findById(String id) {
+        return em.find(User.class, id);
     }
 
-    public Attendee findByLoginPassword(String login, String password) {
-        TypedQuery<Attendee> query = em.createNamedQuery(Attendee.FIND_BY_LOGIN_PASSWORD, Attendee.class);
+    public User findByLoginPassword(String login, String password) {
+        TypedQuery<User> query = em.createNamedQuery(User.FIND_BY_LOGIN_PASSWORD, User.class);
         query.setParameter("login", login);
         query.setParameter("password", PasswordUtils.digestPassword(password));
         return query.getSingleResult();
     }
 
     public void delete(String id) {
-        em.remove(em.getReference(Attendee.class, id));
+        em.remove(em.getReference(User.class, id));
     }
 }

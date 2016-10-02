@@ -11,7 +11,7 @@ import java.util.Set;
  *         --
  */
 @ApplicationPath("api")
-public class AttendeeApplicationConfig extends Application {
+public class UserApplicationConfig extends Application {
 
     // ======================================
     // =          Getters & Setters         =
@@ -20,7 +20,7 @@ public class AttendeeApplicationConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet();
-        classes.add(AttendeeEndpoint.class);
+        classes.add(UserEndpoint.class);
         return classes;
     }
 }

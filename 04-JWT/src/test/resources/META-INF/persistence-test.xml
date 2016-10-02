@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="attendeePU" transaction-type="JTA">
+    <persistence-unit name="userPU" transaction-type="JTA">
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>

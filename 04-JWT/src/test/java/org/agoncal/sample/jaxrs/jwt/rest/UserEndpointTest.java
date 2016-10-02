@@ -1,7 +1,7 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
-import org.agoncal.sample.jaxrs.jwt.domain.Attendee;
-import org.agoncal.sample.jaxrs.jwt.repository.AttendeeRepository;
+import org.agoncal.sample.jaxrs.jwt.domain.User;
+import org.agoncal.sample.jaxrs.jwt.repository.UserRepository;
 import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 import org.agoncal.sample.jaxrs.jwt.util.LoggerProducer;
 import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
@@ -40,14 +40,14 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class AttendeeEndpointTest {
+public class UserEndpointTest {
 
     // ======================================
     // =             Attributes             =
     // ======================================
 
-    private static final Attendee TEST_ATTENDEE = new Attendee("id", "last name", "first name", "login", "password");
-    private static String attendeeId;
+    private static final User TEST_USER = new User("id", "last name", "first name", "login", "password");
+    private static String userId;
     private Client client;
     private WebTarget webTarget;
 
@@ -70,8 +70,8 @@ public class AttendeeEndpointTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(Attendee.class, AttendeeRepository.class, AttendeeEndpoint.class)
-                .addClasses(PasswordUtils.class, KeyGenerator.class, SimpleKeyGenerator.class, LoggerProducer.class, AttendeeApplicationConfig.class)
+                .addClasses(User.class, UserRepository.class, UserEndpoint.class)
+                .addClasses(PasswordUtils.class, KeyGenerator.class, SimpleKeyGenerator.class, LoggerProducer.class, UserApplicationConfig.class)
                 .addAsResource("META-INF/persistence-test.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(files);
@@ -84,7 +84,7 @@ public class AttendeeEndpointTest {
     @Before
     public void initWebTarget() {
         client = ClientBuilder.newClient();
-        webTarget = client.target(baseURL).path("api/attendees");
+        webTarget = client.target(baseURL).path("api/users");
     }
 
     // ======================================
@@ -105,35 +105,35 @@ public class AttendeeEndpointTest {
 
     @Test
     @InSequence(1)
-    public void shouldGetAllAttendees() throws Exception {
+    public void shouldGetAllUsers() throws Exception {
         Response response = webTarget.request(APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
     }
 
     @Test
     @InSequence(2)
-    public void shouldCreateAttendee() throws Exception {
-        Response response = webTarget.request(APPLICATION_JSON_TYPE).post(Entity.entity(TEST_ATTENDEE, APPLICATION_JSON_TYPE));
+    public void shouldCreateUser() throws Exception {
+        Response response = webTarget.request(APPLICATION_JSON_TYPE).post(Entity.entity(TEST_USER, APPLICATION_JSON_TYPE));
         assertEquals(201, response.getStatus());
-        attendeeId = getAttendeeId(response);
+        userId = getUserId(response);
     }
 
     @Test
     @InSequence(3)
-    public void shouldGetAlreadyCreatedAttendee() throws Exception {
-        Response response = webTarget.path(attendeeId).request(APPLICATION_JSON_TYPE).get();
+    public void shouldGetAlreadyCreatedUser() throws Exception {
+        Response response = webTarget.path(userId).request(APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
         JsonObject jsonObject = readJsonContent(response);
-        assertEquals(attendeeId, jsonObject.getString("id"));
-        assertEquals(TEST_ATTENDEE.getLastName(), jsonObject.getString("lastName"));
+        assertEquals(userId, jsonObject.getString("id"));
+        assertEquals(TEST_USER.getLastName(), jsonObject.getString("lastName"));
     }
 
     @Test
     @InSequence(4)
-    public void shouldRemoveAttendee() throws Exception {
-        Response response = webTarget.path(attendeeId).request(APPLICATION_JSON_TYPE).delete();
+    public void shouldRemoveUser() throws Exception {
+        Response response = webTarget.path(userId).request(APPLICATION_JSON_TYPE).delete();
         assertEquals(204, response.getStatus());
-        Response checkResponse = webTarget.path(attendeeId).request(APPLICATION_JSON_TYPE).get();
+        Response checkResponse = webTarget.path(userId).request(APPLICATION_JSON_TYPE).get();
         assertEquals(404, checkResponse.getStatus());
     }
 
@@ -141,7 +141,7 @@ public class AttendeeEndpointTest {
     // =           Private methods          =
     // ======================================
 
-    private String getAttendeeId(Response response) {
+    private String getUserId(Response response) {
         String location = response.getHeaderString("location");
         return location.substring(location.lastIndexOf("/") + 1);
     }

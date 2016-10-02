@@ -15,22 +15,23 @@ import java.util.UUID;
  *         --
  */
 @Entity
+@Table(name = "t_user")
 @NamedQueries({
-        @NamedQuery(name = Attendee.FIND_ALL, query = "SELECT a FROM Attendee a ORDER BY a.lastName DESC"),
-        @NamedQuery(name = Attendee.FIND_BY_LOGIN_PASSWORD, query = "SELECT a FROM Attendee a WHERE a.login = :login AND a.password = :password"),
-        @NamedQuery(name = Attendee.COUNT_ALL, query = "SELECT COUNT(a) FROM Attendee a")
+        @NamedQuery(name = User.FIND_ALL, query = "SELECT u FROM User u ORDER BY u.lastName DESC"),
+        @NamedQuery(name = User.FIND_BY_LOGIN_PASSWORD, query = "SELECT u FROM User u WHERE u.login = :login AND u.password = :password"),
+        @NamedQuery(name = User.COUNT_ALL, query = "SELECT COUNT(u) FROM User u")
 })
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Attendee {
+public class User {
 
     // ======================================
     // =             Constants              =
     // ======================================
 
-    public static final String FIND_ALL = "Attendee.findAll";
-    public static final String COUNT_ALL = "Attendee.countAll";
-    public static final String FIND_BY_LOGIN_PASSWORD = "Attendee.findByLoginAndPassword";
+    public static final String FIND_ALL = "User.findAll";
+    public static final String COUNT_ALL = "User.countAll";
+    public static final String FIND_BY_LOGIN_PASSWORD = "User.findByLoginAndPassword";
 
     // ======================================
     // =             Attributes             =
@@ -52,15 +53,15 @@ public class Attendee {
     // =            Constructors            =
     // ======================================
 
-    public Attendee() {
+    public User() {
     }
 
-    public Attendee(String id, String lastName) {
+    public User(String id, String lastName) {
         this.id = id;
         this.lastName = lastName;
     }
 
-    public Attendee(String id, String lastName, String firstName, String login, String password) {
+    public User(String id, String lastName, String firstName, String login, String password) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -68,7 +69,7 @@ public class Attendee {
         this.password = password;
     }
 
-    public Attendee(String id, String lastName, String firstName, String twitter, String avatarUrl, String company) {
+    public User(String id, String lastName, String firstName, String twitter, String avatarUrl, String company) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -163,8 +164,8 @@ public class Attendee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Attendee attendee = (Attendee) o;
-        return Objects.equals(id, attendee.id);
+        User user = (User) o;
+        return Objects.equals(id, user.id);
     }
 
     @Override
@@ -174,7 +175,7 @@ public class Attendee {
 
     @Override
     public String toString() {
-        return "Attendee{" +
+        return "User{" +
                 "id='" + id + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +

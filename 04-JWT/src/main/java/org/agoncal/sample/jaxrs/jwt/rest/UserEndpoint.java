@@ -2,8 +2,8 @@ package org.agoncal.sample.jaxrs.jwt.rest;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.agoncal.sample.jaxrs.jwt.domain.Attendee;
-import org.agoncal.sample.jaxrs.jwt.repository.AttendeeRepository;
+import org.agoncal.sample.jaxrs.jwt.domain.User;
+import org.agoncal.sample.jaxrs.jwt.repository.UserRepository;
 import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 
 import javax.inject.Inject;
@@ -26,17 +26,17 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
  *         http://www.antoniogoncalves.org
  *         --
  */
-@Path("/attendees")
+@Path("/users")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-public class AttendeeEndpoint {
+public class UserEndpoint {
 
     // ======================================
     // =          Injection Points          =
     // ======================================
 
     @Inject
-    private AttendeeRepository attendeeRepository;
+    private UserRepository userRepository;
 
     @Context
     private UriInfo uriInfo;
@@ -76,8 +76,8 @@ public class AttendeeEndpoint {
     }
 
     private void authenticate(String login, String password) throws Exception {
-        Attendee attendee = attendeeRepository.findByLoginPassword(login, password);
-        if (attendee == null)
+        User user = userRepository.findByLoginPassword(login, password);
+        if (user == null)
             throw new SecurityException("Invalid user/password");
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
@@ -95,51 +95,51 @@ public class AttendeeEndpoint {
     }
 
     @POST
-    public Response create(Attendee attendee) {
-        logger.info("#### create attendee : " + attendee);
-        Attendee created = attendeeRepository.create(attendee);
+    public Response create(User user) {
+        logger.info("#### create user : " + user);
+        User created = userRepository.create(user);
         return Response.created(uriInfo.getAbsolutePathBuilder().path(created.getId()).build()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") String id) {
-        logger.info("#### find attendee by id : " + id);
+        logger.info("#### find user by id : " + id);
 
-        Attendee attendee = attendeeRepository.findById(id);
+        User user = userRepository.findById(id);
 
-        if (attendee == null)
+        if (user == null)
             return Response.status(NOT_FOUND).build();
 
-        return Response.ok(attendee).build();
+        return Response.ok(user).build();
     }
 
     @GET
     @Path("/count")
-    public Response countAllAttendees() {
-        logger.info("#### count all attendee");
+    public Response countAllUsers() {
+        logger.info("#### count all users");
 
-        Long nbAttendees = attendeeRepository.countNumberOfAttendees();
+        Long nbUsers = userRepository.countNumberOfUsers();
 
-        return Response.ok(nbAttendees).build();
+        return Response.ok(nbUsers).build();
     }
 
     @GET
-    public Response allAttendees() {
-        logger.info("#### find all attendee");
+    public Response allUsers() {
+        logger.info("#### find all users");
 
-        List<Attendee> allAttendees = attendeeRepository.findAllAttendees();
+        List<User> allUsers = userRepository.findAllUsers();
 
-        if (allAttendees == null)
+        if (allUsers == null)
             return Response.status(NOT_FOUND).build();
 
-        return Response.ok(allAttendees).build();
+        return Response.ok(allUsers).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response remove(@PathParam("id") String id) {
-        attendeeRepository.delete(id);
+        userRepository.delete(id);
         return Response.noContent().build();
     }
 }

@@ -4,12 +4,12 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="attendeePU" transaction-type="JTA">
+    <persistence-unit name="userPU" transaction-type="JTA">
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.create-target" value="attendeeCreate.ddl"/>
-            <property name="javax.persistence.schema-generation.scripts.drop-target" value="attendeeDrop.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="userCreate.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="userDrop.ddl"/>
             <property name="javax.persistence.sql-load-script-source" value="insert.sql"/>
         </properties>
     </persistence-unit>

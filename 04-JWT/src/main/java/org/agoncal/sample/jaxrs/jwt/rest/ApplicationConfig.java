@@ -11,18 +11,4 @@ import javax.ws.rs.core.Application;
 @ApplicationPath("api")
 public class ApplicationConfig extends Application {
 
-    // ======================================
-    // =          Getters & Setters         =
-    // ======================================
-
-    // @Override
-    // public Set<Class<?>> getClasses() {
-    //
-    //     Set<Class<?>> classes = new HashSet();
-    //     classes.add(EchoEndpoint.class);
-    //     classes.add(SecuredEchoEndpoint.class);
-    //     classes.add(AttendeeEndpoint.class);
-    //     classes.add(AuthenticationFilter.class);
-    //     return classes;
-    // }
 }

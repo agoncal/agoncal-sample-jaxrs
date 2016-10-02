@@ -1,6 +1,6 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
-import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenCheckFilter;
+import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeededFilter;
 import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeeded;
 import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 import org.agoncal.sample.jaxrs.jwt.util.LoggerProducer;
@@ -52,7 +52,7 @@ public class SecuredEchoEndpointTest {
 
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(SecuredEchoEndpoint.class)
-                .addClasses(JWTTokenCheckFilter.class, JWTTokenNeeded.class, KeyGenerator.class, SimpleKeyGenerator.class)
+                .addClasses(JWTTokenNeededFilter.class, JWTTokenNeeded.class, KeyGenerator.class, SimpleKeyGenerator.class)
                 .addClasses(LoggerProducer.class, SecuredEchoApplicationConfig.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
