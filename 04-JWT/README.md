@@ -1,8 +1,8 @@
-# Sample - JAX-RS 2.0 - Testing
+# Sample - JAX-RS 2.0 - JWT
 
 ## Purpose of this sample
 
-The purpose of this sample is to show you how to integration test a RESTful Web Service and check that your URIs are nicelly expressive
+The purpose of this sample is to show you how to generate a JWT token at login, and then check it when the REST service is invoked (through name binding)
 
 [Read more on my blog](http://agoncal.wordpress.com/2012/01/16/wytiwyr-what-you-test-is-what-you-run/)
 
@@ -12,9 +12,10 @@ Being Maven centric, you can compile and package it with `mvn clean compile`, `m
 
 ## Test the sample
 
-The purpose of this sample is to execute integration tests. So to execute it you can run :
+The purpose of this sample is to execute integration tests. So to execute it you have to :
 
-* `mvn integration-test` : this will execute integration tests `CustomerRestServiceIT`
+* Run WildFly on a separate process
+* `mvn clean test -Parquillian-wildfly-remote`
 
 <div class="footer">
     <span class="footerTitle"><span class="uc">a</span>ntonio <span class="uc">g</span>oncalves</span>
