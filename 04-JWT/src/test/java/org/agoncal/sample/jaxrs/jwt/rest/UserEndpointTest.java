@@ -49,7 +49,7 @@ public class UserEndpointTest {
     private static final User TEST_USER = new User("id", "last name", "first name", "login", "password");
     private static String userId;
     private Client client;
-    private WebTarget webTarget;
+    private WebTarget userTarget;
 
     // ======================================
     // =          Injection Points          =
@@ -84,7 +84,7 @@ public class UserEndpointTest {
     @Before
     public void initWebTarget() {
         client = ClientBuilder.newClient();
-        webTarget = client.target(baseURL).path("api/users");
+        userTarget = client.target(baseURL).path("api/users");
     }
 
     // ======================================
@@ -97,7 +97,7 @@ public class UserEndpointTest {
         form.param("username", "dummyUsername");
         form.param("password", "dummyPaswword");
 
-        Response response = webTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+        Response response = userTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
         assertEquals(401, response.getStatus());
         assertNull(response.getHeaderString(HttpHeaders.AUTHORIZATION));
@@ -106,14 +106,14 @@ public class UserEndpointTest {
     @Test
     @InSequence(1)
     public void shouldGetAllUsers() throws Exception {
-        Response response = webTarget.request(APPLICATION_JSON_TYPE).get();
+        Response response = userTarget.request(APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
     }
 
     @Test
     @InSequence(2)
     public void shouldCreateUser() throws Exception {
-        Response response = webTarget.request(APPLICATION_JSON_TYPE).post(Entity.entity(TEST_USER, APPLICATION_JSON_TYPE));
+        Response response = userTarget.request(APPLICATION_JSON_TYPE).post(Entity.entity(TEST_USER, APPLICATION_JSON_TYPE));
         assertEquals(201, response.getStatus());
         userId = getUserId(response);
     }
@@ -121,7 +121,7 @@ public class UserEndpointTest {
     @Test
     @InSequence(3)
     public void shouldGetAlreadyCreatedUser() throws Exception {
-        Response response = webTarget.path(userId).request(APPLICATION_JSON_TYPE).get();
+        Response response = userTarget.path(userId).request(APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
         JsonObject jsonObject = readJsonContent(response);
         assertEquals(userId, jsonObject.getString("id"));
@@ -131,9 +131,9 @@ public class UserEndpointTest {
     @Test
     @InSequence(4)
     public void shouldRemoveUser() throws Exception {
-        Response response = webTarget.path(userId).request(APPLICATION_JSON_TYPE).delete();
+        Response response = userTarget.path(userId).request(APPLICATION_JSON_TYPE).delete();
         assertEquals(204, response.getStatus());
-        Response checkResponse = webTarget.path(userId).request(APPLICATION_JSON_TYPE).get();
+        Response checkResponse = userTarget.path(userId).request(APPLICATION_JSON_TYPE).get();
         assertEquals(404, checkResponse.getStatus());
     }
 

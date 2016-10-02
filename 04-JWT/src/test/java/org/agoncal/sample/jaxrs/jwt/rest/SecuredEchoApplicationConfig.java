@@ -24,6 +24,7 @@ public class SecuredEchoApplicationConfig extends Application {
         Set<Class<?>> classes = new HashSet();
         classes.add(SecuredEchoEndpoint.class);
         classes.add(JWTTokenNeededFilter.class);
+        classes.add(UserEndpoint.class);
         return classes;
     }
 }

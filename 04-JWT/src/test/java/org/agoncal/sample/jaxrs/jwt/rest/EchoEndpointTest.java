@@ -30,7 +30,7 @@ public class EchoEndpointTest {
     // ======================================
 
     private Client client;
-    private WebTarget webTarget;
+    private WebTarget echoTarget;
 
     // ======================================
     // =          Injection Points          =
@@ -58,7 +58,7 @@ public class EchoEndpointTest {
     @Before
     public void initWebTarget() {
         client = ClientBuilder.newClient();
-        webTarget = client.target(baseURL).path("api/echo");
+        echoTarget = client.target(baseURL).path("api/echo");
     }
 
     // ======================================
@@ -67,7 +67,7 @@ public class EchoEndpointTest {
 
     @Test
     public void shouldEcho() throws Exception {
-        Response response = webTarget.request(TEXT_PLAIN).get();
+        Response response = echoTarget.request(TEXT_PLAIN).get();
         assertEquals(200, response.getStatus());
     }
 }
