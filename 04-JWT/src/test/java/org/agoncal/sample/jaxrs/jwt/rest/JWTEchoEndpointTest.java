@@ -4,7 +4,6 @@ import io.jsonwebtoken.Jwts;
 import org.agoncal.sample.jaxrs.jwt.domain.User;
 import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeeded;
 import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeededFilter;
-import org.agoncal.sample.jaxrs.jwt.repository.UserRepository;
 import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 import org.agoncal.sample.jaxrs.jwt.util.LoggerProducer;
 import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
@@ -41,7 +40,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class SecuredEchoEndpointTest {
+public class JWTEchoEndpointTest {
 
     // ======================================
     // =             Attributes             =
@@ -50,7 +49,7 @@ public class SecuredEchoEndpointTest {
     private static final User TEST_USER = new User("id", "last name", "first name", "login", "password");
     private static String token;
     private Client client;
-    private WebTarget securedEchoTarget;
+    private WebTarget jwtEchoTarget;
     private WebTarget userTarget;
 
     // ======================================
@@ -72,10 +71,10 @@ public class SecuredEchoEndpointTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(SecuredEchoEndpoint.class)
-                .addClasses(User.class, UserRepository.class, UserEndpoint.class)
+                .addClasses(EchoEndpoint.class)
+                .addClasses(User.class, UserEndpoint.class)
                 .addClasses(JWTTokenNeededFilter.class, JWTTokenNeeded.class, KeyGenerator.class, SimpleKeyGenerator.class, PasswordUtils.class)
-                .addClasses(LoggerProducer.class, SecuredEchoApplicationConfig.class)
+                .addClasses(LoggerProducer.class, JWTEchoApplicationConfig.class)
                 .addAsResource("META-INF/persistence-test.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(files);
@@ -88,7 +87,7 @@ public class SecuredEchoEndpointTest {
     @Before
     public void initWebTarget() {
         client = ClientBuilder.newClient();
-        securedEchoTarget = client.target(baseURL).path("api/securedecho");
+        jwtEchoTarget = client.target(baseURL).path("api/echo/jwt");
         userTarget = client.target(baseURL).path("api/users");
     }
 
@@ -99,7 +98,7 @@ public class SecuredEchoEndpointTest {
     @Test
     @InSequence(1)
     public void shouldFailCauseNoUserAuthentication() throws Exception {
-        Response response = securedEchoTarget.request(TEXT_PLAIN).get();
+        Response response = jwtEchoTarget.request(TEXT_PLAIN).get();
         assertEquals(401, response.getStatus());
     }
 
@@ -138,7 +137,17 @@ public class SecuredEchoEndpointTest {
     @Test
     @InSequence(4)
     public void shouldSucceedCauseTokenIsPassedInTheHeader() throws Exception {
-        Response response = securedEchoTarget.request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, token).get();
+        Response response = jwtEchoTarget.request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, token).get();
         assertEquals(200, response.getStatus());
+        assertEquals("no message", response.readEntity(String.class));
+    }
+
+
+    @Test
+    @InSequence(5)
+    public void shouldEchoHello() throws Exception {
+        Response response = jwtEchoTarget.queryParam("message", "hello").request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, token).get();
+        assertEquals(200, response.getStatus());
+        assertEquals("hello", response.readEntity(String.class));
     }
 }

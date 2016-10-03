@@ -13,7 +13,7 @@ import java.util.Set;
  *         --
  */
 @ApplicationPath("api")
-public class SecuredEchoApplicationConfig extends Application {
+public class JWTEchoApplicationConfig extends Application {
 
     // ======================================
     // =          Getters & Setters         =
@@ -22,8 +22,8 @@ public class SecuredEchoApplicationConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet();
-        classes.add(SecuredEchoEndpoint.class);
         classes.add(JWTTokenNeededFilter.class);
+        classes.add(EchoEndpoint.class);
         classes.add(UserEndpoint.class);
         return classes;
     }

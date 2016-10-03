@@ -1,5 +1,7 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
+import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeeded;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,6 +18,7 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
  *         --
  */
 @Path("/echo")
+@Produces(TEXT_PLAIN)
 public class EchoEndpoint {
 
     // ======================================
@@ -30,9 +33,14 @@ public class EchoEndpoint {
     // ======================================
 
     @GET
-    @Produces(TEXT_PLAIN)
     public Response echo(@QueryParam("message") String message) {
-        logger.info("#### Received message: " + message);
+        return Response.ok().entity(message == null ? "no message" : message).build();
+    }
+
+    @GET
+    @Path("jwt")
+    @JWTTokenNeeded
+    public Response echoWithJWTToken(@QueryParam("message") String message) {
         return Response.ok().entity(message == null ? "no message" : message).build();
     }
 }

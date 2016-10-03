@@ -1,7 +1,6 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
 import org.agoncal.sample.jaxrs.jwt.domain.User;
-import org.agoncal.sample.jaxrs.jwt.repository.UserRepository;
 import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
 import org.agoncal.sample.jaxrs.jwt.util.LoggerProducer;
 import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
@@ -70,7 +69,7 @@ public class UserEndpointTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(User.class, UserRepository.class, UserEndpoint.class)
+                .addClasses(User.class, UserEndpoint.class)
                 .addClasses(PasswordUtils.class, KeyGenerator.class, SimpleKeyGenerator.class, LoggerProducer.class, UserApplicationConfig.class)
                 .addAsResource("META-INF/persistence-test.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")

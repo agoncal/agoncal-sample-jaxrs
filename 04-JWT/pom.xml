@@ -58,6 +58,12 @@
 
     <build>
         <finalName>sampleJaxRsJWT</finalName>
+        <plugins>
+            <plugin>
+                <groupId>com.github.jeluard</groupId>
+                <artifactId>plantuml-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

@@ -1,5 +1,6 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
+import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeeded;
 import org.agoncal.sample.jaxrs.jwt.util.LoggerProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -47,7 +48,7 @@ public class EchoEndpointTest {
     public static WebArchive createDeployment() {
 
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(EchoEndpoint.class, LoggerProducer.class, EchoApplicationConfig.class)
+                .addClasses(EchoEndpoint.class, LoggerProducer.class, JWTTokenNeeded.class, EchoApplicationConfig.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -66,8 +67,16 @@ public class EchoEndpointTest {
     // ======================================
 
     @Test
-    public void shouldEcho() throws Exception {
+    public void shouldEchoNoMessage() throws Exception {
         Response response = echoTarget.request(TEXT_PLAIN).get();
         assertEquals(200, response.getStatus());
+        assertEquals("no message", response.readEntity(String.class));
+    }
+
+    @Test
+    public void shouldEchoHello() throws Exception {
+        Response response = echoTarget.queryParam("message", "hello").request(TEXT_PLAIN).get();
+        assertEquals(200, response.getStatus());
+        assertEquals("hello", response.readEntity(String.class));
     }
 }

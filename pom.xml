@@ -22,7 +22,10 @@
         <version.javaee>7.0</version.javaee>
         <version.jersey>2.23.2</version.jersey>
         <version.junit>4.12</version.junit>
-        <!--Maven Plugins-->
+        <!-- Documentation -->
+        <version.plantuml.maven.plugin>1.2</version.plantuml.maven.plugin>
+        <version.plantuml>8048</version.plantuml>
+        <!-- Maven Plugins -->
         <version.clean.plugin>3.0.0</version.clean.plugin>
         <version.compiler.plugin>3.5.1</version.compiler.plugin>
         <version.dependency.plugin>2.10</version.dependency.plugin>
@@ -33,7 +36,7 @@
         <version.site.plugin>3.5.1</version.site.plugin>
         <version.surefire.plugin>2.19.1</version.surefire.plugin>
         <version.war.plugin>2.6</version.war.plugin>
-        <!--Test-->
+        <!-- Test -->
         <version.arquillian>1.0.0.Alpha4</version.arquillian>
         <version.arquillian.wildfly.remote>8.2.1.Final</version.arquillian.wildfly.remote>
         <version.arquillian.wildfly.managed>8.2.1.Final</version.arquillian.wildfly.managed>
@@ -44,7 +47,7 @@
         <version.json>1.0.4</version.json>
         <!-- App servers -->
         <version.wildfly>10.1.0.Final</version.wildfly>
-        <!--Encoding-->
+        <!-- Encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -212,7 +215,36 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>com.github.jeluard</groupId>
+                    <artifactId>plantuml-maven-plugin</artifactId>
+                    <version>${version.plantuml.maven.plugin}</version>
+                    <configuration>
+                        <sourceFiles>
+                            <directory>${basedir}/src/main/docs</directory>
+                            <includes>
+                                <include>**/*.puml</include>
+                            </includes>
+                        </sourceFiles>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.sourceforge.plantuml</groupId>
+                            <artifactId>plantuml</artifactId>
+                            <version>${version.plantuml}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
+
         </pluginManagement>
     </build>
 

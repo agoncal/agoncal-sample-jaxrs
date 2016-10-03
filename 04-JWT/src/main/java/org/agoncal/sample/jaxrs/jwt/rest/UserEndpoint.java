@@ -3,10 +3,14 @@ package org.agoncal.sample.jaxrs.jwt.rest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.agoncal.sample.jaxrs.jwt.domain.User;
-import org.agoncal.sample.jaxrs.jwt.repository.UserRepository;
 import org.agoncal.sample.jaxrs.jwt.util.KeyGenerator;
+import org.agoncal.sample.jaxrs.jwt.util.PasswordUtils;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -32,14 +36,12 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 @Path("/users")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
+@Transactional
 public class UserEndpoint {
 
     // ======================================
     // =          Injection Points          =
     // ======================================
-
-    @Inject
-    private UserRepository userRepository;
 
     @Context
     private UriInfo uriInfo;
@@ -49,6 +51,9 @@ public class UserEndpoint {
 
     @Inject
     private KeyGenerator keyGenerator;
+
+    @PersistenceContext
+    private EntityManager em;
 
     // ======================================
     // =          Business methods          =
@@ -79,13 +84,16 @@ public class UserEndpoint {
     }
 
     private void authenticate(String login, String password) throws Exception {
-        User user = userRepository.findByLoginPassword(login, password);
+        TypedQuery<User> query = em.createNamedQuery(User.FIND_BY_LOGIN_PASSWORD, User.class);
+        query.setParameter("login", login);
+        query.setParameter("password", PasswordUtils.digestPassword(password));
+        User user = query.getSingleResult();
+
         if (user == null)
             throw new SecurityException("Invalid user/password");
     }
 
     private String issueToken(String login) {
-        // The issued token must be associated to a user (login)
         Key key = keyGenerator.generateKey();
         String jwtToken = Jwts.builder()
                 .setSubject(login)
@@ -99,23 +107,16 @@ public class UserEndpoint {
 
     }
 
-    private Date toDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
     @POST
     public Response create(User user) {
-        logger.info("#### create user : " + user);
-        User created = userRepository.create(user);
-        return Response.created(uriInfo.getAbsolutePathBuilder().path(created.getId()).build()).build();
+        em.persist(user);
+        return Response.created(uriInfo.getAbsolutePathBuilder().path(user.getId()).build()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") String id) {
-        logger.info("#### find user by id : " + id);
-
-        User user = userRepository.findById(id);
+        User user = em.find(User.class, id);
 
         if (user == null)
             return Response.status(NOT_FOUND).build();
@@ -124,20 +125,9 @@ public class UserEndpoint {
     }
 
     @GET
-    @Path("/count")
-    public Response countAllUsers() {
-        logger.info("#### count all users");
-
-        Long nbUsers = userRepository.countNumberOfUsers();
-
-        return Response.ok(nbUsers).build();
-    }
-
-    @GET
-    public Response allUsers() {
-        logger.info("#### find all users");
-
-        List<User> allUsers = userRepository.findAllUsers();
+    public Response findAllUsers() {
+        TypedQuery<User> query = em.createNamedQuery(User.FIND_ALL, User.class);
+        List<User> allUsers = query.getResultList();
 
         if (allUsers == null)
             return Response.status(NOT_FOUND).build();
@@ -148,7 +138,15 @@ public class UserEndpoint {
     @DELETE
     @Path("/{id}")
     public Response remove(@PathParam("id") String id) {
-        userRepository.delete(id);
+        em.remove(em.getReference(User.class, id));
         return Response.noContent().build();
+    }
+
+    // ======================================
+    // =          Private methods           =
+    // ======================================
+
+    private Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }

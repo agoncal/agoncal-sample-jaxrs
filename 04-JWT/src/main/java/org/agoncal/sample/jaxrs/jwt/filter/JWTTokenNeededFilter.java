@@ -49,6 +49,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 
         // Check if the HTTP Authorization header is present and formatted correctly
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            logger.severe("#### invalid authorizationHeader : " + authorizationHeader);
             throw new NotAuthorizedException("Authorization header must be provided");
         }
 
@@ -58,20 +59,13 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            validateToken(token);
+            Key key = keyGenerator.generateKey();
+            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
             logger.info("#### valid token : " + token);
 
         } catch (Exception e) {
+            logger.severe("#### invalid token : " + token);
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
-    }
-
-    private void validateToken(String jwtToken) throws Exception {
-        // Check if it was issued by the server and if it's not expired
-        // Throw an Exception if the token is invalid
-        Key key = keyGenerator.generateKey();
-        logger.info("#### validating token for a key : " + jwtToken + " - " + key);
-        Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken);
-        //OK, we can trust this JWT
     }
 }
