@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Samples - JAX-RS and JWT</title>
 </head>
@@ -8,10 +8,18 @@
 <h1>Samples - JAX-RS and JWT</h1>
 
 <a href="api/echo?message=hello">Echo hello</a><br/>
-<a href="api/securedecho?message=hello">Secured Echo hello</a><br/>
+<a href="api/securedecho?message=hello">Secured Echo hello (does not work if not logged in)</a><br/>
 <a href="api/users/count">Count all Users</a><br/>
 <a href="api/users">Get all Users</a><br/>
 <a href="api/users/7c0481a08abe0ca9d96757d281fffc3021c53att">Get user by id</a><br/>
+
+<h2>Login</h2>
+Try user/password quentinada/quentinada<br/><br/>
+<form method="post" enctype="application/x-www-form-urlencoded" action="api/users/login">
+    Login: <input type="text" name="login"><br/>
+    Password: <input type="text" name="password"><br/>
+    <input type="submit" name="Login"/>
+</form>
 
 </body>
 </html>
