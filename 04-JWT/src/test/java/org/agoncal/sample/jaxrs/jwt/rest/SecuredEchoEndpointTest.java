@@ -1,5 +1,6 @@
 package org.agoncal.sample.jaxrs.jwt.rest;
 
+import io.jsonwebtoken.Jwts;
 import org.agoncal.sample.jaxrs.jwt.domain.User;
 import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeeded;
 import org.agoncal.sample.jaxrs.jwt.filter.JWTTokenNeededFilter;
@@ -31,6 +32,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.net.URI;
+import java.security.Key;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
@@ -112,7 +114,7 @@ public class SecuredEchoEndpointTest {
     @InSequence(3)
     public void shouldLogUserIn() throws Exception {
         Form form = new Form();
-        form.param("username", TEST_USER.getLogin());
+        form.param("login", TEST_USER.getLogin());
         form.param("password", TEST_USER.getPassword());
 
         Response response = userTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
@@ -120,6 +122,17 @@ public class SecuredEchoEndpointTest {
         assertEquals(200, response.getStatus());
         assertNotNull(response.getHeaderString(HttpHeaders.AUTHORIZATION));
         token = response.getHeaderString(HttpHeaders.AUTHORIZATION);
+
+        // Check the JWT Token
+        String justTheToken = token.substring("Bearer".length()).trim();
+        Key key = new SimpleKeyGenerator().generateKey();
+        assertEquals(1, Jwts.parser().setSigningKey(key).parseClaimsJws(justTheToken).getHeader().size());
+        assertEquals("HS512", Jwts.parser().setSigningKey(key).parseClaimsJws(justTheToken).getHeader().getAlgorithm());
+        assertEquals(4, Jwts.parser().setSigningKey(key).parseClaimsJws(justTheToken).getBody().size());
+        assertEquals("login", Jwts.parser().setSigningKey(key).parseClaimsJws(justTheToken).getBody().getSubject());
+        assertEquals(baseURL.toString().concat("api/users/login"), Jwts.parser().setSigningKey(key).parseClaimsJws(justTheToken).getBody().getIssuer());
+        assertNotNull(Jwts.parser().setSigningKey(key).parseClaimsJws(justTheToken).getBody().getIssuedAt());
+        assertNotNull(Jwts.parser().setSigningKey(key).parseClaimsJws(justTheToken).getBody().getExpiration());
     }
 
     @Test

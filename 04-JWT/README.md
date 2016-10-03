@@ -12,10 +12,14 @@ Being Maven centric, you can compile and package it with `mvn clean compile`, `m
 
 ## Test the sample
 
-The purpose of this sample is to execute integration tests. So to execute it you have to :
+This sample uses [Arquillian](http://arquillian.org/) for integration tests. So to execute it you have to :
 
-* Run WildFly on a separate process
+* Run [WildFly](http://wildfly.org/) on a separate process
 * `mvn clean test -Parquillian-wildfly-remote`
+
+Or use the embedded version of [WildFly](http://wildfly.org/) 
+
+* `mvn clean test -Parquillian-wildfly-managed`
 
 <div class="footer">
     <span class="footerTitle"><span class="uc">a</span>ntonio <span class="uc">g</span>oncalves</span>

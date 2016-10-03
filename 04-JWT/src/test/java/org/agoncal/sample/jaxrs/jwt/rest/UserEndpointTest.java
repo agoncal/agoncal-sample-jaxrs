@@ -94,8 +94,8 @@ public class UserEndpointTest {
     @Test
     public void shouldFailLogin() throws Exception {
         Form form = new Form();
-        form.param("username", "dummyUsername");
-        form.param("password", "dummyPaswword");
+        form.param("login", "dummyLogin");
+        form.param("password", "dummyPassword");
 
         Response response = userTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
