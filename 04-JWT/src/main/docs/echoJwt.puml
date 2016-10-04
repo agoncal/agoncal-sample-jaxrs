@@ -1,12 +1,13 @@
 @startuml
 
+autonumber "<font color=red><b>0  "
 actor "HTTP Client" as httpclient
-httpclient --> JWTTokenNeededFilter: GET /api/echo/jwt
-httpclient //-- JWTTokenNeededFilter: 401 Unathorized
-httpclient --> UserEndpoint: POST /api/users/login
-httpclient //-- UserEndpoint: Bearer sdfq.azera.sf
-httpclient --> JWTTokenNeededFilter: GET /api/echo/jwt Authorization: Bearer sdfq.azera.sf
-JWTTokenNeededFilter --> EchoEndpoint: GET /api/echo/jwt
+httpclient -> JWTTokenNeededFilter: GET /api/echo/jwt
+httpclient <-- JWTTokenNeededFilter: 401 Unathorized
+httpclient -> UserEndpoint: POST /api/users/login
+httpclient <-- UserEndpoint: Bearer sdfq.azera.sf
+httpclient -> JWTTokenNeededFilter: GET /api/echo/jwt Authorization: Bearer sdfq.azera.sf
+JWTTokenNeededFilter -> EchoEndpoint: GET /api/echo/jwt
 
 
 @enduml

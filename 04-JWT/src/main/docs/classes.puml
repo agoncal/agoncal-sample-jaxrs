@@ -1,5 +1,10 @@
 @startuml
 
+class EchoEndpoint <<Path>> {
+ +echo(msg)
+ +echoWithJWTToken(msg) << @JWTTokenNeeded >>
+}
+
 class User <<Entity>> {
  -id <<@Id>>
  -lastName
@@ -10,11 +15,6 @@ class User <<Entity>> {
 
 class UserEndpoint <<Path>> {
  +authenticateUser(login, password)
-}
-
-class EchoEndpoint <<Path>> {
- +echo(msg)
- +echoWithJWTToken(msg) << @JWTTokenNeeded >>
 }
 
 class JWTTokenNeededFilter <<@JWTTokenNeeded>> implements ContainerRequestFilter {

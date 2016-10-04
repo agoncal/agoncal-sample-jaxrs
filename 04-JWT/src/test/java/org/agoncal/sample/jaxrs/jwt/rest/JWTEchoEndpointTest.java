@@ -49,8 +49,8 @@ public class JWTEchoEndpointTest {
     private static final User TEST_USER = new User("id", "last name", "first name", "login", "password");
     private static String token;
     private Client client;
-    private WebTarget jwtEchoTarget;
-    private WebTarget userTarget;
+    private WebTarget echoEndpointTarget;
+    private WebTarget userEndpointTarget;
 
     // ======================================
     // =          Injection Points          =
@@ -87,8 +87,8 @@ public class JWTEchoEndpointTest {
     @Before
     public void initWebTarget() {
         client = ClientBuilder.newClient();
-        jwtEchoTarget = client.target(baseURL).path("api/echo/jwt");
-        userTarget = client.target(baseURL).path("api/users");
+        echoEndpointTarget = client.target(baseURL).path("api/echo/jwt");
+        userEndpointTarget = client.target(baseURL).path("api/users");
     }
 
     // ======================================
@@ -97,15 +97,15 @@ public class JWTEchoEndpointTest {
 
     @Test
     @InSequence(1)
-    public void shouldFailCauseNoUserAuthentication() throws Exception {
-        Response response = jwtEchoTarget.request(TEXT_PLAIN).get();
+    public void invokingEchoShouldFailCauseNoToken() throws Exception {
+        Response response = echoEndpointTarget.request(TEXT_PLAIN).get();
         assertEquals(401, response.getStatus());
     }
 
     @Test
     @InSequence(2)
-    public void shouldCreateUser() throws Exception {
-        Response response = userTarget.request(APPLICATION_JSON_TYPE).post(Entity.entity(TEST_USER, APPLICATION_JSON_TYPE));
+    public void shouldCreateAUser() throws Exception {
+        Response response = userEndpointTarget.request(APPLICATION_JSON_TYPE).post(Entity.entity(TEST_USER, APPLICATION_JSON_TYPE));
         assertEquals(201, response.getStatus());
     }
 
@@ -116,7 +116,7 @@ public class JWTEchoEndpointTest {
         form.param("login", TEST_USER.getLogin());
         form.param("password", TEST_USER.getPassword());
 
-        Response response = userTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+        Response response = userEndpointTarget.path("login").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
         assertEquals(200, response.getStatus());
         assertNotNull(response.getHeaderString(HttpHeaders.AUTHORIZATION));
@@ -136,8 +136,8 @@ public class JWTEchoEndpointTest {
 
     @Test
     @InSequence(4)
-    public void shouldSucceedCauseTokenIsPassedInTheHeader() throws Exception {
-        Response response = jwtEchoTarget.request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, token).get();
+    public void invokingEchoShouldSucceedCauseToken() throws Exception {
+        Response response = echoEndpointTarget.request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, token).get();
         assertEquals(200, response.getStatus());
         assertEquals("no message", response.readEntity(String.class));
     }
@@ -146,7 +146,7 @@ public class JWTEchoEndpointTest {
     @Test
     @InSequence(5)
     public void shouldEchoHello() throws Exception {
-        Response response = jwtEchoTarget.queryParam("message", "hello").request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, token).get();
+        Response response = echoEndpointTarget.queryParam("message", "hello").request(TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, token).get();
         assertEquals(200, response.getStatus());
         assertEquals("hello", response.readEntity(String.class));
     }
