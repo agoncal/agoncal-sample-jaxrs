@@ -24,8 +24,8 @@ public class Main {
     private static final String GIPHY_SEARCH_URL = "http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=100&rating=g&q=";
 
     public static void main(String[] args) throws IOException {
-        goAndGetGiphy("cat");
-        goAndGetGiphy("zombie");
+        goAndGetGiphy("cats");
+        goAndGetGiphy("zombies");
     }
 
     private static void goAndGetGiphy(String what) throws IOException {
@@ -71,7 +71,7 @@ public class Main {
         Map<String, Boolean> config = new HashMap<>();
         config.put(JsonGenerator.PRETTY_PRINTING, true);
         JsonGeneratorFactory generatorFactory = Json.createGeneratorFactory(config);
-        return generatorFactory.createGenerator(new FileWriter(createFile(what, what + "s.json")));
+        return generatorFactory.createGenerator(new FileWriter(createFile(what, what + ".json")));
     }
 
     private static File createFile(String what, String fileName) {
