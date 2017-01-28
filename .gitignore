@@ -3,6 +3,7 @@
 *.log
 *.iml
 target
+output
 *.class
 *.jar
 *.war

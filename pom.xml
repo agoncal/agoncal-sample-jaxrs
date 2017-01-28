@@ -15,13 +15,14 @@
         <module>02-Amazon</module>
         <module>03-QueryByExample</module>
         <module>04-JWT</module>
+        <module>05-Giphy</module>
     </modules>
 
     <properties>
         <version.java>1.8</version.java>
         <version.javaee>7.0</version.javaee>
         <version.jersey>2.23.2</version.jersey>
-        <version.junit>4.12</version.junit>
+        <version.commons-io>2.5</version.commons-io>
         <!-- Documentation -->
         <version.plantuml.maven.plugin>1.2</version.plantuml.maven.plugin>
         <version.plantuml>8048</version.plantuml>
@@ -37,6 +38,7 @@
         <version.surefire.plugin>2.19.1</version.surefire.plugin>
         <version.war.plugin>2.6</version.war.plugin>
         <!-- Test -->
+        <version.junit>4.12</version.junit>
         <version.arquillian>1.0.0.Alpha4</version.arquillian>
         <version.arquillian.wildfly.remote>8.2.1.Final</version.arquillian.wildfly.remote>
         <version.arquillian.wildfly.managed>8.2.1.Final</version.arquillian.wildfly.managed>
@@ -85,6 +87,13 @@
                 <groupId>org.glassfish.jersey.containers</groupId>
                 <artifactId>jersey-container-servlet</artifactId>
                 <version>${version.jersey}</version>
+            </dependency>
+
+            <!-- OTHERS -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${version.commons-io}</version>
             </dependency>
 
             <!-- ARQUILLIAN TEST -->
