@@ -38,7 +38,7 @@
         <version.surefire.plugin>2.19.1</version.surefire.plugin>
         <version.war.plugin>2.6</version.war.plugin>
         <!-- Test -->
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.arquillian>1.0.0.Alpha4</version.arquillian>
         <version.arquillian.wildfly.remote>8.2.1.Final</version.arquillian.wildfly.remote>
         <version.arquillian.wildfly.managed>8.2.1.Final</version.arquillian.wildfly.managed>
