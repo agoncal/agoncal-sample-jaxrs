@@ -22,7 +22,7 @@
         <version.java>1.8</version.java>
         <version.javaee>7.0</version.javaee>
         <version.jersey>2.23.2</version.jersey>
-        <version.commons-io>2.5</version.commons-io>
+        <version.commons-io>2.7</version.commons-io>
         <!-- Documentation -->
         <version.plantuml.maven.plugin>1.2</version.plantuml.maven.plugin>
         <version.plantuml>8048</version.plantuml>
