@@ -45,7 +45,7 @@
         <skipTests>false</skipTests>
         <skipITs>${skipTests}</skipITs>
         <skipUTs>${skipTests}</skipUTs>
-        <version.resteasy>3.0.18.Final</version.resteasy>
+        <version.resteasy>3.14.0.Final</version.resteasy>
         <version.json>1.0.4</version.json>
         <!-- App servers -->
         <version.wildfly>10.1.0.Final</version.wildfly>
